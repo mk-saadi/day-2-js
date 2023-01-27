@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span id="ct">Timezone here </span><br />
+    <span id="ct2">Hour Minutes Sec here </span><br />
+    <input type="button" value="Show" onClick="disp_TZ()" />
+    <form name="f1">
+      <select name="tz" onChange="disp_TZ()"></select>
+    </form>
+    <script>
+      function disp_TZ() {
+        //tz='Africa/Accra'
+        tz = f1.tz.options[f1.tz.options.selectedIndex].value;
+        str = new Date().toLocaleString("en-NZ", {
+          timeZone: tz,
+          timeZoneName: "short",
+        });
+
+        document.getElementById("ct").innerHTML = str + " , " + tz;
+        // showing hour minutes and seconds ///
+        dt2 = new Date();
+        str2 = new Date(
+          dt2.toLocaleString("en-US", {
+            timeZone: tz,
+          })
+        );
+
+        diff = dt2.getTime() - str2.getTime();
+        dt3 = new Date(dt2.getTime() - diff);
+        hour = dt3.getHours();
+        minute = dt3.getMinutes();
+        seconds = dt3.getSeconds();
+        str3 = hour + ":" + minute + ":" + seconds;
+        document.getElementById("ct2").innerHTML = str3;
+        ////  end of hour minutes and seconds ///
+        display_c();
+      }
+      function display_c() {
+        refresh = 1000;
+        mytime = setTimeout("disp_TZ()", refresh);
+      }
+      var my_timezones = [
+        "Africa/Abidjan",
+        "Africa/Accra",
+        "Africa/Addis_Ababa",
+      ];
+      for (i = 0; i < my_timezones.length; i++) {
+        addOption(document.f1.tz, my_timezones[i], my_timezones[i]);
+      }
+      function addOption(selectbox, text, value) {
+        var optn = document.createElement("OPTION");
+        optn.text = text;
+        optn.value = value;
+        selectbox.options.add(optn);
+      }
+    </script>
+  </body>
+</html>
